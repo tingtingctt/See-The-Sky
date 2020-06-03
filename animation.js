@@ -57,7 +57,7 @@ canvas.addEventListener('click', function(event) {
 
 
 function drawBackground(){
-    c.fillStyle = "black";
+    c.fillStyle = "#000000";
     c.fillRect (0, 0, canvas.width, canvas.height);
 }
 
@@ -91,7 +91,7 @@ function pokeHole(){
             drawNeedle(newLength);
         }, 200);
 
-        if (i=needleLength){
+        if (i>=needleLength-1){
             setTimeout(function(){
                 drawBackground();
                 drawHole(2);
@@ -145,16 +145,19 @@ function openHole(){
 
 
     setTimeout(function(){
-        for (var i=maxRadius/2; i<canvas.width; i++){
+        for (var i=maxRadius/2; i<canvas.height*1.2; i++){
             setTimeout(function(){
                 drawBackground();
                 newRadius++;
                 drawHole(newRadius);
                 compare();
+
+                if (newRadius >= canvas.height*1.2){
+                    call();
+                }
             }, 1000);
         }
     },25000);
-
 };
 
 function skyText(){
@@ -169,6 +172,13 @@ function compare(){
     c.font = "20px Arial";
     c.textAlign = "center";
     c.fillText("Compare its color with that of the sky above your head.", canvas.width/2, canvas.height*0.8);  
+}
+
+function call(){
+    c.fillStyle = "#ffffff";
+    c.font = "20px Arial";
+    c.textAlign = "center";
+    c.fillText("Call me one day when you find the shades of the two skies merge.", canvas.width/2, canvas.height/2);  
 }
 
 // var e = document.getElementById('myCanvas'),
