@@ -1,23 +1,59 @@
 // Take your screen outside and hold it above your head.
-// Click here to poke a hole in the screen.
+// Click the needle to poke a hole in the screen.
 // Look into the screen through the hole.
 // As the hole opens up, you see the sky inside the screen.
 // Compare its color with that of the sky above your head.
 
 
-var canvas = document.querySelector("canvas");
+var canvas = document.querySelector("#animation");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 var c = canvas.getContext('2d');
+// var elemLeft = c.offsetLeft;
+// var elemTop = c.offsetTop;
+// var elements = [];
 
 var needleLength = 30;
 var r = 4;
 var maxRadius = window.innerHeight/2;
 
+
+
+
 drawBackground();
-drawNeedle(30);
-setTimeout(pokeHole, 2000);
+takeOutside();
+next();
+
+
+
+
+
+function takeOutside(){
+    c.fillStyle = "#b3d1e6";
+    c.font = "30px Arial";
+    c.textAlign = "center";
+    c.fillText("Take your screen outside and hold it above your head.", canvas.width/2, canvas.height/2);
+}
+
+function next(){
+    c.fillStyle = "#408cbf";
+    c.font = "20px Arial";
+    c.textAlign = "center";
+    c.fillText("next", canvas.width/2, canvas.height*0.618);
+}
+
+canvas.addEventListener('click', function(event) {
+    if (event.pageY > canvas.height/2) {
+        drawBackground();
+        drawNeedle(30);
+        // setTimeout(pokeHole, 3000);
+    }
+    else if (event.pageY < canvas.height/2){
+        pokeHole();
+    }
+
+ }, false);
 
 
 function drawBackground(){
@@ -35,6 +71,15 @@ function drawNeedle(needleLength){
     c.beginPath();
     c.arc (canvas.width/2, canvas.height/2 - needleLength - r, r, Math.PI * 2, false);
     c.stroke();
+
+    click();
+}
+
+function click() {
+    c.fillStyle = "#408cbf";
+    c.font = "20px Arial";
+    c.textAlign = "center";
+    c.fillText("Click the needle to poke a hole in the screen.", canvas.width/2, canvas.height*0.618);
 }
 
 
@@ -50,11 +95,20 @@ function pokeHole(){
             setTimeout(function(){
                 drawBackground();
                 drawHole(2);
+                seeInto();
             }, 200);
 
-            setTimeout(openHole, 1000);
+            setTimeout(openHole, 5000);
         }
     };
+}
+
+
+function seeInto(){
+    c.fillStyle = "#b3d1e6";
+    c.font = "20px Arial";
+    c.textAlign = "center";
+    c.fillText("Look into the screen through the hole.", canvas.width/2, canvas.height*0.618);  
 }
 
 function drawHole(radius){
@@ -63,20 +117,87 @@ function drawHole(radius){
     c.fill();
 }
 
-
 function openHole(){
     drawBackground();
     drawHole(2);
 
-    for (var i=0; i<maxRadius; i++){
-        var newRadius = 1;
+    var newRadius = 1;
+    for (var i=0; i<maxRadius/4; i++){
         setTimeout(function(){
             drawBackground();
             newRadius++;
             drawHole(newRadius);
+            skyText();
         }, 1000);
     }
+
+
+    setTimeout(function(){
+        for (var i=maxRadius/4; i<maxRadius/2; i++){
+            setTimeout(function(){
+                drawBackground();
+                newRadius++;
+                drawHole(newRadius);
+                compare();
+            }, 1000);
+        }
+    },10000);
+
+
+    setTimeout(function(){
+        for (var i=maxRadius/2; i<canvas.width; i++){
+            setTimeout(function(){
+                drawBackground();
+                newRadius++;
+                drawHole(newRadius);
+                compare();
+            }, 1000);
+        }
+    },25000);
+
 };
+
+function skyText(){
+    c.fillStyle = "#b3d1e6";
+    c.font = "20px Arial";
+    c.textAlign = "center";
+    c.fillText("As the hole opens up, you see the sky inside the screen.", canvas.width/2, canvas.height*0.8);  
+}
+
+function compare(){
+    c.fillStyle = "#408cbf";
+    c.font = "20px Arial";
+    c.textAlign = "center";
+    c.fillText("Compare its color with that of the sky above your head.", canvas.width/2, canvas.height*0.8);  
+}
+
+// var e = document.getElementById('myCanvas'),
+//    elemLeft = e.offsetLeft,
+//    elemTop = e.offsetTop,
+//    context = e.getContext('2d'),
+//    elements = [];
+
+// e.addEventListener('click', function(event) {
+//    var xVal = event.pageX - elemLeft,
+//    yVal = event.pageY - elemTop;
+//    console.log(xVal, yVal);
+//    elements.forEach(function(ele) {
+//       if (yVal > ele.top && yVal < ele.top + ele.height && xVal > ele.left && xVal < ele.left + ele.width) {
+//          alert(‘element clicked');
+//       }
+//    });
+// }, false);
+// elements.push({
+//    colour: '#1C2128’,
+//    width: 250,
+//    height: 200,
+//    top: 30,
+//    left: 20
+// });
+// elements.forEach(function(ele) {
+//    context.fillStyle = element.colour;
+//    context.fillRect(ele.left, ele.top, ele.width, ele.height);
+// });
 
 
 
